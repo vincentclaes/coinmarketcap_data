@@ -1,5 +1,6 @@
 #!/Users/vincent/anaconda3/bin/python
 import requests
+import time
 import json
 import pandas as pd
 from datetime import datetime
@@ -26,13 +27,13 @@ def get_data():
     df['date'] = now.date()
     df['hour'] = now.hour
     df['minute'] = now.minute
+    df['uuid'] = int(time.time())
 
-    # file_path = os.path.abspath(os.getcwd())
     file_path = 'Users/vincent/Workspace/coinmarketcap_data'
     db_path = 'sqlite:///{}/coinmarketcap_data.db'.format(file_path)
     print '{}'.format(db_path)
     disk_engine = create_engine(db_path)
-    df.to_sql('stock_price', disk_engine, if_exists='append')
+    df.to_sql('crypto_data', disk_engine, if_exists='append')
 
 
 if __name__ == '__main__':
