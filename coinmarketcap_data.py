@@ -1,22 +1,25 @@
 #!/Users/vincent/anaconda3/bin/python
-import requests
-import time
 import json
 import os
-import pandas as pd
+import time
 from datetime import datetime
+
+import pandas as pd
+import requests
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 
+
 def _construct_db_path(file_path):
     return 'sqlite:///{}/coinmarketcap_data.db'.format(file_path)
+
 
 def load_to_db(df, db_path):
     disk_engine = create_engine(db_path)
     df.to_sql('crypto_data', disk_engine, if_exists='append')
 
-def get_data():
 
+def get_data():
     url = "https://api.coinmarketcap.com/v1/ticker/"
 
     querystring = {"limit": "200"}
