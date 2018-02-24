@@ -1,3 +1,5 @@
+# Schedule retrieval of Coinmarketcap data
+
 this script get data from coinmarketcap and dumps it into sqlite database.
 this script is scheduled using launchd on OSX.
 
