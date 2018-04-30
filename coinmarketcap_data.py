@@ -10,7 +10,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 
 
-def _construct_db_path(file_path):
+def _construct_db_path():
+    file_path = "/Users/vincent/Workspace/coinmarketcap_data"
+    if os.path.exists("/home/ec2-user/projects/data/coinmarketcap_data.db"):
+        file_path = "/home/ec2-user/projects/data"
     return 'sqlite:///{}/coinmarketcap_data.db'.format(file_path)
 
 
@@ -40,8 +43,7 @@ def get_data():
     df['minute'] = now.minute
     df['uuid'] = int(time.time())
 
-    file_path = 'Users/vincent/Workspace/coinmarketcap_data'
-    db_path = _construct_db_path(file_path)
+    db_path = _construct_db_path()
     print '{}'.format(db_path)
     try:
         load_to_db(df, db_path)
