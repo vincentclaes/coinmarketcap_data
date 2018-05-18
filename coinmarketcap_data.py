@@ -2,6 +2,7 @@
 import json
 import os
 import time
+import traceback
 from datetime import datetime
 
 import pandas as pd
@@ -10,14 +11,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 
 
-def _construct_db_path():
+def _select_db_path():
     file_path = "/Users/vincent/Workspace/coinmarketcap_data"
     if os.path.exists("/home/ec2-user/projects/data/coinmarketcap_data.db"):
+        print "/home/ec2-user/projects/data/coinmarketcap_data.db exists !"
         file_path = "/home/ec2-user/projects/data"
+    return _construct_db_path(file_path)
+
+
+def _construct_db_path(file_path):
     return 'sqlite:///{}/coinmarketcap_data.db'.format(file_path)
 
 
 def load_to_db(df, db_path):
+    print "db path used {}".format(db_path)
     disk_engine = create_engine(db_path)
     df.to_sql('crypto_data', disk_engine, if_exists='append')
 
@@ -43,11 +50,12 @@ def get_data():
     df['minute'] = now.minute
     df['uuid'] = int(time.time())
 
-    db_path = _construct_db_path()
+    db_path = _select_db_path()
     print '{}'.format(db_path)
     try:
         load_to_db(df, db_path)
     except OperationalError:
+        traceback.print_exc()
         db_path = _construct_db_path(os.path.dirname(os.path.realpath(__file__)))
         load_to_db(df, db_path)
 
