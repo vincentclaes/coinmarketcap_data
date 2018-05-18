@@ -56,8 +56,8 @@ def get_data():
         load_to_db(df, db_path)
     except OperationalError:
         traceback.print_exc()
-        db_path = _construct_db_path(os.path.dirname(os.path.realpath(__file__)))
-        load_to_db(df, db_path)
+        # db_path = _construct_db_path(os.path.dirname(os.path.realpath(__file__)))
+        # load_to_db(df, db_path)
 
 
 if __name__ == '__main__':
