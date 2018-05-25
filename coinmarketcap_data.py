@@ -26,7 +26,7 @@ def _construct_db_path(file_path):
 def load_to_db(df, db_path):
     print "db path used {}".format(db_path)
     disk_engine = create_engine(db_path)
-    df.to_sql('crypto_data', disk_engine, if_exists='append')
+    df.to_sql('crypto_data', disk_engine, if_exists='append', index=False)
 
 
 def get_data():
@@ -50,6 +50,8 @@ def get_data():
     df['minute'] = now.minute
     df['uuid'] = int(time.time())
 
+    df = convert_types(df)
+
     db_path = _select_db_path()
     print '{}'.format(db_path)
     try:
@@ -58,6 +60,20 @@ def get_data():
         traceback.print_exc()
         # db_path = _construct_db_path(os.path.dirname(os.path.realpath(__file__)))
         # load_to_db(df, db_path)
+
+
+def convert_types(df):
+    types = [pd.to_numeric, pd.to_numeric, str, pd.to_numeric, pd.to_numeric, pd.to_numeric, str, \
+            pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, \
+            str, pd.to_numeric, pd.to_datetime, pd.to_numeric, pd.to_numeric, pd.to_numeric]
+    df_updated = pd.DataFrame()
+    column_type_mapping = zip(types, df.columns)
+    for type_func, column in column_type_mapping:
+        if not isinstance(type_func, type):
+            df_updated[column] = type_func(df[column])
+        else:
+            df_updated[column] = df[column]
+    return df_updated
 
 
 if __name__ == '__main__':
