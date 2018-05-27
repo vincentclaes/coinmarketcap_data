@@ -24,6 +24,7 @@ def _construct_db_path(file_path):
 
 
 def load_to_db(df, db_path):
+    print "{}".format(df.to_string())
     print "db path used {}".format(db_path)
     disk_engine = create_engine(db_path)
     df.to_sql('crypto_data', disk_engine, if_exists='append', index=False)
