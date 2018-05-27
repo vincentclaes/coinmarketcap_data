@@ -1,6 +1,7 @@
 #!/Users/vincent/anaconda3/bin/python
 import json
 import os
+import sys
 import time
 import traceback
 from datetime import datetime
@@ -59,14 +60,13 @@ def get_data():
         load_to_db(df, db_path)
     except OperationalError:
         traceback.print_exc()
-        # db_path = _construct_db_path(os.path.dirname(os.path.realpath(__file__)))
-        # load_to_db(df, db_path)
+        sys.exit(1)
 
 
 def convert_types(df):
     types = [pd.to_numeric, pd.to_numeric, str, pd.to_numeric, pd.to_numeric, pd.to_numeric, str, \
-            pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, \
-            str, pd.to_numeric, pd.to_datetime, pd.to_numeric, pd.to_numeric, pd.to_numeric]
+             pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, pd.to_numeric, \
+             str, pd.to_numeric, pd.to_datetime, pd.to_numeric, pd.to_numeric, pd.to_numeric]
     df_updated = pd.DataFrame()
     column_type_mapping = zip(types, df.columns)
     for type_func, column in column_type_mapping:
