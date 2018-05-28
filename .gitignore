@@ -158,3 +158,4 @@ venv.bak/
 
 coinmarketcap_data.db
 coinmarketcap_data copy.db
+coinmarketcap_data_copy2.db
